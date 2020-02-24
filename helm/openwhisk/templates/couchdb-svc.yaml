@@ -30,3 +30,25 @@ spec:
     - port: {{ .Values.db.port }}
       name: couchdb
 {{ end }}
+
+---
+{{ if not .Values.db.external }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-couchdb
+  labels:
+    name: {{ .Release.Name }}-couchdb
+{{ include "openwhisk.label_boilerplate" . | indent 4 }}
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: {{ .Release.Name }}-couchdb
+          servicePort: {{ .Values.db.port }}
+        path: /{{ .Release.Name }}-couchdb
+{{ end }}
