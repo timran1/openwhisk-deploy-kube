@@ -210,6 +210,7 @@ db:
   restartPolicy: "Always"
   host: null
   port: 5984
+  externalPort: 32121
   provider: "CouchDB"
   protocol: "http"
   # Production deployments _MUST_ override the default user/password values
